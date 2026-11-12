@@ -24,304 +24,528 @@ public class BrowserServer {
 <title>WattWise | Smart Energy Estimator</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#172033}
-header{background:#123b68;color:white;padding:25px 7%;display:flex;justify-content:space-between;align-items:center}
-header h1{margin:0;font-size:27px}
-header p{margin:6px 0 0;color:#d8e7f7}
-main{max-width:1100px;margin:28px auto;padding:0 18px}
-.card{background:white;padding:22px;border-radius:13px;margin-bottom:20px;box-shadow:0 3px 14px #17203312}
-h2{margin-top:0;color:#173e68;font-size:21px}
-.appliance{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:end;margin:12px 0}
-.field small{display:block;font-weight:bold;font-size:11px;color:#62718a;margin-bottom:7px}
-input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font-size:14px;background:white}
-button{border:0;border-radius:7px;padding:12px 17px;background:#1769aa;color:white;font-weight:bold;cursor:pointer}
-button:hover{opacity:.9}
-button.secondary{background:#e6eef7;color:#173e68}
-button.danger{background:#fce8e8;color:#a32626;padding:10px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.settings{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.results{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.result{background:#edf5fc;padding:18px;border-radius:10px}
-.result small{color:#53677f}
-.result strong{display:block;font-size:24px;margin-top:9px;color:#164d7b}
-.status{padding:13px;border-radius:8px;margin-top:14px;background:#edf5fc}
-.bar-row{display:grid;grid-template-columns:140px 1fr 80px;gap:10px;align-items:center;margin:12px 0;font-size:13px}
-.bar{height:13px;background:#e5edf5;border-radius:20px;overflow:hidden}
-.bar span{display:block;height:100%;background:#2384c6;border-radius:20px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:11px;border-bottom:1px solid #e5eaf0}
-th{background:#f1f5f9}
-.muted{color:#68788c;font-size:13px}
-@media(max-width:700px){
- header{display:block}.appliance{grid-template-columns:1fr 1fr}
- .appliance .field.name{grid-column:1/-1}
- .settings,.results{grid-template-columns:1fr}
- .bar-row{grid-template-columns:90px 1fr 65px}
+html,body{margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:#F3F6FB;color:#142B4A}
+header{background:#142B4A;padding:22px 30px}
+.brand{display:flex;align-items:center;gap:13px}
+.logo{width:44px;height:44px;border-radius:12px;background:#2563EB;color:#fff;font-size:22px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+.brand h1{margin:0;font-size:25px;font-weight:bold;color:#fff;line-height:1.2}
+.brand p{margin:3px 0 0;font-size:10px;color:#CBD5E1}
+main{padding:26px 30px 30px;display:flex;flex-direction:column;gap:20px}
+.welcome{font-size:23px;font-weight:bold;color:#142B4A;margin:0}
+.desc{font-size:13px;color:#64748B;margin:7px 0 0}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:20px}
+.title{font-size:16px;font-weight:bold;color:#142B4A;margin:0}
+.col{display:flex;flex-direction:column}
+.g18{gap:18px}.g14{gap:14px}.g12{gap:12px}.g10{gap:10px}.g6{gap:6px}
+.small{font-size:11px;font-weight:bold;color:#142B4A}
+.hint{font-size:11px;color:#64748B}
+input[type=text]{height:40px;width:100%;background:#fff;border:1px solid #D8E0EC;border-radius:8px;padding:0 12px;font-size:13px;font-family:inherit;color:#142B4A;outline:none}
+input[type=text]:focus{border-color:#2563EB}
+input[type=text]:disabled{background:#F1F5F9;color:#94A3B8}
+select{height:32px;width:100%;background:#ececec;border:1px solid #c4c4c4;border-radius:4px;padding:0 8px;font-size:13px;font-family:inherit;color:#142B4A}
+.arow{display:flex;gap:8px;align-items:center}
+.arow .n{flex:1;min-width:0}.arow .p{width:100px;flex:none}.arow .h{width:105px;flex:none}
+.rm{flex:none;width:40px;height:40px;border:0;border-radius:8px;background:#FEE2E2;color:#B91C1C;font-size:16px;font-weight:bold;cursor:pointer}
+button{font-family:inherit}
+.btn{border:0;border-radius:8px;padding:10px;font-size:13px;font-weight:bold;cursor:pointer;width:100%}
+.btn.blue{background:#2563EB;color:#fff}
+.btn.light{background:#E8F0FF;color:#2563EB}
+.btn:hover{filter:brightness(.96)}
+.btn.big{height:46px;border-radius:10px;font-size:14px}
+.btn.mid{height:42px}
+.trio{display:flex;gap:10px}.trio .btn{flex:1}
+.pair{display:flex;gap:14px}.pair .card{flex:1;min-width:0}
+.cap{font-size:12px;color:#64748B}
+.val{font-size:21px;font-weight:bold;word-break:break-word}
+.blue-t{color:#2563EB}.green-t{color:#15803D}.red-t{color:#B91C1C}
+#budgetStatus{font-size:14px;font-weight:bold;color:#64748B}
+#highest{font-size:14px;font-weight:bold;color:#2563EB}
+.insight{font-size:13px;color:#142B4A;padding:7px 0}
+#saveRec{font-size:13px;color:#142B4A}
+#message{font-size:12px;color:#64748B}
+#chart{width:100%;height:340px;min-height:280px}
+.ov{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.ov.show{display:flex}
+.dlg{background:#fff;border-radius:6px;min-width:300px;max-width:520px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.dlg .dt{padding:10px 14px;font-size:13px;color:#334155;border-bottom:1px solid #e5e7eb}
+.dlg .dh{padding:16px 18px 6px;font-size:16px;font-weight:bold;color:#142B4A}
+.dlg .db{padding:6px 18px 18px;font-size:13px;color:#334155;word-break:break-word}
+.dlg .df{padding:10px 14px;background:#f3f4f6;display:flex;justify-content:flex-end;border-radius:0 0 6px 6px}
+.dlg .df button{border:1px solid #bbb;background:#e5e7eb;border-radius:3px;padding:6px 26px;cursor:pointer}
+.hist{max-width:1050px;width:100%;background:#fff;border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.hist .dt{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;color:#334155;border-bottom:1px solid #e5e7eb}
+.hist .dt button{border:0;background:none;font-size:18px;cursor:pointer;color:#475569}
+.hist .tb{padding:12px}
+.hist .tb button{border:1px solid #bbb;background:#e5e7eb;border-radius:3px;padding:6px 14px;cursor:pointer;margin-bottom:10px}
+.hist .sc{overflow:auto;max-height:55vh;border:1px solid #d1d5db}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f3f4f6;text-align:left;padding:8px 10px;border-bottom:1px solid #d1d5db;border-right:1px solid #e5e7eb;position:sticky;top:0;white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid #eef0f3;white-space:nowrap}
+@media(max-width:640px){
+ main{padding:20px 14px}header{padding:18px 14px}
+ .pair{flex-direction:column}.trio{flex-direction:column}
+ .arow .p{width:76px}.arow .h{width:80px}
 }
 </style>
 </head>
 <body>
 <header>
- <div><h1>WattWise</h1><p>SMART ENERGY ESTIMATOR</p></div>
- <div>Smart Energy Management</div>
+ <div class="brand">
+  <div class="logo">W</div>
+  <div><h1>WattWise</h1><p>SMART ENERGY ESTIMATOR</p></div>
+ </div>
 </header>
 <main>
- <section class="card">
-  <h2>Appliance Details</h2>
-  <p class="muted">Enter the appliances you use and their daily usage.</p>
-  <div id="appliances"></div>
-  <div class="actions">
-   <button type="button" onclick="addAppliance()">+ Add Appliance</button>
-   <button type="button" class="secondary" onclick="saveAppliances()">Save Details</button>
-   <button type="button" class="secondary" onclick="loadAppliances()">Load Saved Details</button>
+ <div>
+  <h2 class="welcome">Electricity Cost Calculator</h2>
+  <p class="desc">Estimate electricity use, understand costs, and find ways to save.</p>
+ </div>
+
+ <section class="card col g18">
+  <h3 class="title">Your appliances</h3>
+  <div id="rows" class="col g10"></div>
+  <button class="btn light" type="button" onclick="addRow()">+ Add Appliance</button>
+
+  <div class="col g6">
+   <div class="small">ELECTRICITY RATE</div>
+   <div class="hint">Rate in ₹ per kWh (Fixed Rate mode only)</div>
+   <input id="tariff" type="text" inputmode="decimal" placeholder="Example: 8">
+  </div>
+
+  <div class="col g6">
+   <div class="small">BILLING MODE</div>
+   <div class="hint">Choose how your electricity bill is estimated</div>
+   <select id="mode" onchange="modeChanged()">
+    <option>Fixed Rate</option>
+    <option>Slab-Based Billing</option>
+   </select>
+  </div>
+
+  <div class="col g6">
+   <div class="small">MONTHLY ELECTRICITY BUDGET</div>
+   <div class="hint">Your maximum target bill in rupees</div>
+   <input id="budget" type="text" inputmode="decimal" placeholder="Example: 1000">
+  </div>
+
+  <div class="trio">
+   <button class="btn blue" type="button" onclick="saveDetails()">Save Details</button>
+   <button class="btn light" type="button" onclick="loadSaved(true)">Load Saved Details</button>
+   <button class="btn light" type="button" onclick="loadFromDb()">Load from MySQL</button>
   </div>
  </section>
 
- <section class="card">
-  <h2>Billing Settings</h2>
-  <div class="settings">
-   <div class="field"><small>ELECTRICITY TARIFF (₹/UNIT)</small>
-    <input id="tariff" type="number" min="0" step="any" value="8">
-   </div>
-   <div class="field"><small>BILLING MODE</small>
-    <select id="billingMode">
-     <option value="fixed">Fixed Rate</option>
-     <option value="slab">Slab-Based Billing</option>
-    </select>
-   </div>
-   <div class="field"><small>MONTHLY BUDGET (₹)</small>
-    <input id="budget" type="number" min="0" step="any" placeholder="Enter budget">
-   </div>
-  </div>
-  <div class="actions">
-   <button onclick="calculate()">Calculate My Cost</button>
-  </div>
+ <button class="btn blue big" type="button" onclick="calculate()">Calculate my cost &nbsp;→</button>
+ <button class="btn light mid" type="button" onclick="showHistory()">View History</button>
+
+ <h3 class="title">Daily estimate</h3>
+ <div class="pair">
+  <div class="card col g10"><div class="cap">Daily energy consumption</div><div class="val blue-t" id="dE">-- kWh</div></div>
+  <div class="card col g10"><div class="cap">Daily estimated cost</div><div class="val green-t" id="dC">₹ --</div></div>
+ </div>
+
+ <h3 class="title">Monthly estimate</h3>
+ <div class="pair">
+  <div class="card col g10"><div class="cap">Monthly energy (30 days)</div><div class="val blue-t" id="mE">-- kWh</div></div>
+  <div class="card col g10"><div class="cap">Monthly estimated cost</div><div class="val green-t" id="mC">₹ --</div></div>
+ </div>
+
+ <h3 class="title">Yearly estimate</h3>
+ <div class="pair">
+  <div class="card col g10"><div class="cap">Yearly energy (365 days)</div><div class="val blue-t" id="yE">-- kWh</div></div>
+  <div class="card col g10"><div class="cap">Yearly estimated cost</div><div class="val green-t" id="yC">₹ --</div></div>
+ </div>
+
+ <section class="card col g10">
+  <h3 class="title">Monthly budget check</h3>
+  <div id="budgetStatus">Enter a monthly budget to check your estimate.</div>
  </section>
 
- <section class="card">
-  <h2>Energy Consumption and Cost</h2>
-  <div class="results">
-   <div class="result"><small>Daily Energy</small><strong id="dailyEnergy">0 kWh</strong></div>
-   <div class="result"><small>Monthly Energy</small><strong id="monthlyEnergy">0 kWh</strong></div>
-   <div class="result"><small>Yearly Energy</small><strong id="yearlyEnergy">0 kWh</strong></div>
-   <div class="result"><small>Daily Cost</small><strong id="dailyCost">₹0.00</strong></div>
-   <div class="result"><small>Monthly Cost</small><strong id="monthlyCost">₹0.00</strong></div>
-   <div class="result"><small>Yearly Cost</small><strong id="yearlyCost">₹0.00</strong></div>
+ <section class="card col g12">
+  <h3 class="title">Consumption insights</h3>
+  <div id="highest">Calculate to discover your highest-consuming appliance.</div>
+  <div class="hint">Appliance-wise share of daily consumption</div>
+  <div id="insights" class="col g10"></div>
+ </section>
+
+ <section class="card col g14">
+  <h3 class="title">Energy-saving recommendations</h3>
+  <div id="saveRec">Calculate your usage to receive an energy-saving suggestion.</div>
+  <div class="pair">
+   <div class="card col g10"><div class="cap">Potential daily savings</div><div class="val green-t" id="sD">₹ --</div></div>
+   <div class="card col g10"><div class="cap">Potential monthly savings</div><div class="val green-t" id="sM">₹ --</div></div>
   </div>
-  <div id="budgetStatus" class="status">Calculate your energy usage to view your budget status.</div>
- </section>
-
- <section class="card">
-  <h2>Energy Usage Insights</h2>
-  <p id="highest">Highest-consuming appliance: --</p>
-  <p id="recommendation">Savings recommendation: --</p>
-  <h3>Daily Energy by Appliance</h3>
-  <div id="chart" class="muted">Calculate to view the chart.</div>
- </section>
-
- <section class="card">
-  <h2>Calculation History</h2>
-  <div class="actions"><button class="secondary" onclick="loadHistory()">View History</button></div>
-  <div style="overflow-x:auto;margin-top:14px">
-   <table>
-    <thead><tr><th>Date</th><th>Daily Energy</th><th>Daily Cost</th><th>Monthly Cost</th><th>Tariff</th></tr></thead>
-    <tbody id="history"><tr><td colspan="5">Select View History to load records.</td></tr></tbody>
-   </table>
+  <div class="pair">
+   <div class="card col g10"><div class="cap">Potential yearly savings</div><div class="val green-t" id="sY">₹ --</div></div>
+   <div class="card col g10"><div class="cap">Revised monthly bill</div><div class="val blue-t" id="sR">₹ --</div></div>
   </div>
+  <div class="hint">Illustrative estimates assume the same tariff and usage pattern.</div>
  </section>
 
- <section class="card">
-  <h2>Export Report</h2>
-  <p class="muted">Download your latest calculation as a CSV report.</p>
-  <button onclick="exportCSV()">Export CSV Report</button>
+ <section class="card col g12">
+  <h3 class="title">Energy usage comparison</h3>
+  <div class="hint">Compare the daily energy used by each appliance.</div>
+  <div id="chart"></div>
  </section>
+
+ <button class="btn blue" type="button" onclick="exportCsv()">Export CSV Report</button>
+ <div id="message">Enter appliance details, tariff, and monthly budget.</div>
 </main>
 
+<div class="ov" id="dlgOv">
+ <div class="dlg">
+  <div class="dt">WattWise</div>
+  <div class="dh" id="dlgH"></div>
+  <div class="db" id="dlgB"></div>
+  <div class="df"><button type="button" onclick="closeDlg()">OK</button></div>
+ </div>
+</div>
+
+<div class="ov" id="histOv">
+ <div class="hist">
+  <div class="dt"><span>WattWise | Calculation History</span><button type="button" onclick="closeHist()">×</button></div>
+  <div class="tb">
+   <button type="button" onclick="loadHistory()">Refresh History</button>
+   <div class="sc">
+    <table>
+     <thead><tr><th>ID</th><th>Calculated At</th><th>Daily kWh</th><th>Daily Cost (₹)</th><th>Monthly kWh</th><th>Monthly Cost (₹)</th><th>Tariff (₹/kWh)</th></tr></thead>
+     <tbody id="histBody"></tbody>
+    </table>
+   </div>
+  </div>
+ </div>
+</div>
+
 <script>
-const applianceBox=document.getElementById('appliances');
-let lastCalculation=null;
+var SLAB='Slab-Based Billing';
+var last=null;
+var rowsBox=document.getElementById('rows');
+var $=function(id){return document.getElementById(id);};
 
-function addAppliance(name='',power='',hours=''){
- const row=document.createElement('div');
- row.className='appliance';
- row.innerHTML=`
-  <div class="field name"><small>APPLIANCE *</small>
-   <input class="a-name" placeholder="Appliance *">
-  </div>
-  <div class="field"><small>POWER (W) *</small>
-   <input class="a-power" type="number" min="0" step="any" placeholder="Watts *">
-  </div>
-  <div class="field"><small>HOURS/DAY *</small>
-   <input class="a-hours" type="number" min="0" max="24" step="any" placeholder="Hours/day *">
-  </div>
-  <button type="button" class="danger" onclick="this.parentElement.remove()">Remove</button>`;
- row.querySelector('.a-name').value=name;
- row.querySelector('.a-power').value=power;
- row.querySelector('.a-hours').value=hours;
- applianceBox.appendChild(row);
+function esc(v){return String(v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+function addRow(name,power,hours){
+ var d=document.createElement('div');
+ d.className='arow';
+ d.innerHTML='<input type="text" class="n" placeholder="Appliance *">'
+  +'<input type="text" class="p" inputmode="decimal" placeholder="Watts *">'
+  +'<input type="text" class="h" inputmode="decimal" placeholder="Hours/day *">'
+  +'<button type="button" class="rm">×</button>';
+ d.querySelector('.n').value=name||'';
+ d.querySelector('.p').value=power||'';
+ d.querySelector('.h').value=hours||'';
+ d.querySelector('.rm').onclick=function(){
+  if(rowsBox.children.length>1){d.remove();}
+  else{showError('At least one appliance is required.');}
+ };
+ rowsBox.appendChild(d);
 }
 
-function getAppliances(){
- const rows=[...document.querySelectorAll('.appliance')];
- if(!rows.length)throw new Error('Add at least one appliance.');
- return rows.map((row,index)=>{
-  const name=row.querySelector('.a-name').value.trim();
-  const power=Number(row.querySelector('.a-power').value);
-  const hours=Number(row.querySelector('.a-hours').value);
-  if(!name||!Number.isFinite(power)||power<=0||!Number.isFinite(hours)||hours<=0||hours>24){
-   throw new Error('Please enter a valid name, wattage and daily usage for appliance '+(index+1)+'.');
-  }
-  return {name,power,hours};
- });
+function modeChanged(){
+ var slab=$('mode').value===SLAB;
+ $('tariff').disabled=slab;
+ $('tariff').placeholder=slab?'Not required for slab billing':'Example: 8';
 }
 
-async function api(url,options={}){
- const response=await fetch(url,options);
- const data=await response.json();
- if(!response.ok)throw new Error(data.error||'Request failed.');
+function setMsg(text,color){var m=$('message');m.textContent=text;m.style.color=color;}
+function setStatus(t){setMsg(t,'#15803D');}
+function openDlg(h,b){$('dlgH').textContent=h;$('dlgB').textContent=b;$('dlgOv').classList.add('show');}
+function closeDlg(){$('dlgOv').classList.remove('show');}
+function showSuccess(t){openDlg('Success',t);}
+function showError(t){setMsg(t,'#B91C1C');openDlg('Please check your details',t);}
+
+function num(s){return Number(String(s).trim());}
+
+function slabBill(units){
+ var rem=units,bill=0,lim=[100,200,300],rate=[1.5,3.5,5.5],prev=0;
+ for(var i=0;i<lim.length;i++){
+  var inSlab=Math.min(rem,lim[i]-prev);
+  if(inSlab>0){bill+=inSlab*rate[i];rem-=inSlab;}
+  prev=lim[i];
+  if(rem<=0)return bill;
+ }
+ if(rem>0)bill+=rem*7;
+ return bill;
+}
+function calcBill(energy,tariff){return $('mode').value===SLAB?slabBill(energy):energy*tariff;}
+
+function readRows(){
+ var out=[];
+ var list=rowsBox.children;
+ for(var i=0;i<list.length;i++){
+  var name=list[i].querySelector('.n').value.trim();
+  var pTxt=list[i].querySelector('.p').value.trim();
+  var hTxt=list[i].querySelector('.h').value.trim();
+  if(!name){showError('Appliance name is mandatory.');return null;}
+  if(!pTxt){showError('Power in Watts is mandatory.');return null;}
+  if(!hTxt){showError('Hours per day is mandatory.');return null;}
+  var power=num(pTxt),hours=num(hTxt);
+  if(isNaN(power)||isNaN(hours)){showError('Please enter valid numeric values for power, hours, tariff, and budget.');return null;}
+  if(!isFinite(power)||power<=0){showError('Appliance power must be greater than 0 Watts.');return null;}
+  if(!isFinite(hours)||hours<=0||hours>24){showError('Appliance hours must be greater than 0 and at most 24.');return null;}
+  out.push({name:name,power:power,hours:hours});
+ }
+ return out;
+}
+
+function readSettings(){
+ var slab=$('mode').value===SLAB;
+ var tariff=0;
+ if(!slab){
+  var t=$('tariff').value.trim();
+  if(!t){showError('Please enter the electricity rate.');return null;}
+  tariff=num(t);
+  if(isNaN(tariff)){showError('Please enter valid numeric values for power, hours, tariff, and budget.');return null;}
+  if(!isFinite(tariff)||tariff<0){showError('Tariff must be zero or greater.');return null;}
+ }
+ var b=$('budget').value.trim();
+ if(!b){showError('Please enter your monthly electricity budget.');return null;}
+ var budget=num(b);
+ if(isNaN(budget)){showError('Please enter valid numeric values for power, hours, tariff, and budget.');return null;}
+ if(!isFinite(budget)||budget<0){showError('Monthly budget must be zero or greater.');return null;}
+ return {slab:slab,tariff:tariff,budget:budget};
+}
+
+async function api(url,options){
+ var r=await fetch(url,options||{});
+ var data=await r.json();
+ if(!r.ok)throw new Error(data.error||'Request failed.');
  return data;
 }
-
-async function saveAppliances(){
- try{
-  const items=getAppliances();
-  const body=new URLSearchParams();
-  body.set('count',items.length);
-  items.forEach((a,i)=>{
-   body.set('name'+i,a.name);
-   body.set('power'+i,a.power);
-   body.set('hours'+i,a.hours);
-  });
-  await api('/api/appliances',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
-  localStorage.setItem('wattwise-appliances',JSON.stringify(items));
-  alert('Appliance details saved successfully.');
- }catch(e){alert(e.message);}
-}
-
-async function loadAppliances(){
- try{
-  const items=await api('/api/appliances');
-  if(items.length){
-   applianceBox.innerHTML='';
-   items.forEach(a=>addAppliance(a.name,a.power,a.hours));
-   alert('Saved appliance details loaded from MySQL.');
-   return;
-  }
-  const local=JSON.parse(localStorage.getItem('wattwise-appliances')||'[]');
-  if(local.length){
-   applianceBox.innerHTML='';
-   local.forEach(a=>addAppliance(a.name,a.power,a.hours));
-   alert('Loaded locally saved appliance details.');
-  }else alert('No saved appliance details found.');
- }catch(e){alert('Could not load saved details: '+e.message);}
-}
+function formBody(obj){var b=new URLSearchParams();for(var k in obj)b.set(k,obj[k]);return b;}
 
 function calculate(){
+ last=null;
+ var s=readSettings();if(!s)return false;
+ var items=readRows();if(!items)return false;
+
+ var total=0,hi=-1,hiName='',hiPower=0,hiHours=0;
+ var names=[],energies=[];
+ items.forEach(function(a){
+  var used=a.power*a.hours/1000;
+  total+=used;names.push(a.name);energies.push(used);
+  if(used>hi){hi=used;hiName=a.name;hiPower=a.power;hiHours=a.hours;}
+ });
+
+ var monthlyEnergy=total*30,yearlyEnergy=total*365;
+ var dailyCost,monthlyCost,yearlyCost;
+ if(s.slab){
+  monthlyCost=calcBill(monthlyEnergy,0);
+  dailyCost=monthlyCost/30;
+  yearlyCost=calcBill(yearlyEnergy/12,0)*12;
+ }else{
+  dailyCost=total*s.tariff;
+  monthlyCost=dailyCost*30;
+  yearlyCost=dailyCost*365;
+ }
+ if(![total,dailyCost,monthlyCost,yearlyCost,yearlyEnergy].every(isFinite)){
+  showError('The calculated values are too large to display.');return false;
+ }
+ var eff=monthlyEnergy>0?monthlyCost/monthlyEnergy:s.tariff;
+
+ $('dE').textContent=total.toFixed(3)+' kWh/day';
+ $('dC').textContent='₹'+dailyCost.toFixed(2)+'/day';
+ $('mE').textContent=monthlyEnergy.toFixed(3)+' kWh';
+ $('mC').textContent='₹'+monthlyCost.toFixed(2);
+ $('yE').textContent=yearlyEnergy.toFixed(3)+' kWh';
+ $('yC').textContent='₹'+yearlyCost.toFixed(2);
+
+ $('highest').textContent='Highest-consuming appliance: '+hiName+' ('+hi.toFixed(3)+' kWh/day)';
+ $('insights').innerHTML=names.map(function(n,i){
+  var pct=total>0?energies[i]/total*100:0;
+  return '<div class="insight">'+esc(n)+' — '+energies[i].toFixed(3)+' kWh/day ('+pct.toFixed(1)+'%)</div>';
+ }).join('');
+
+ var hoursReduced=Math.min(1.0,hiHours);
+ var dailySavedKwh=hiPower*hoursReduced/1000;
+ var monthlySavedKwh=dailySavedKwh*30,yearlySavedKwh=dailySavedKwh*365;
+ var sD,sM,sY,rev;
+ if(s.slab){
+  var redM=calcBill(Math.max(0,monthlyEnergy-monthlySavedKwh),0);
+  var redY=calcBill(Math.max(0,yearlyEnergy-yearlySavedKwh)/12,0)*12;
+  sM=Math.max(0,monthlyCost-redM);
+  sY=Math.max(0,yearlyCost-redY);
+  sD=sM/30;rev=redM;
+ }else{
+  sD=dailySavedKwh*s.tariff;sM=sD*30;sY=sD*365;
+  rev=Math.max(0,monthlyCost-sM);
+ }
+ $('saveRec').textContent='Recommendation: Reduce '+hiName+' usage by '+hoursReduced.toFixed(1)+' hour(s) per day. This could save '+dailySavedKwh.toFixed(3)+' kWh daily.';
+ $('sD').textContent='₹'+sD.toFixed(2)+'/day';
+ $('sM').textContent='₹'+sM.toFixed(2)+'/month';
+ $('sY').textContent='₹'+sY.toFixed(2)+'/year';
+ $('sR').textContent='₹'+rev.toFixed(2);
+
+ var bs=$('budgetStatus');
+ if(monthlyCost>s.budget){
+  bs.textContent='⚠ Over budget by ₹'+(monthlyCost-s.budget).toFixed(2)+'. Estimated bill: ₹'+monthlyCost.toFixed(2)+' | Budget: ₹'+s.budget.toFixed(2);
+  bs.style.color='#B91C1C';
+ }else{
+  bs.textContent='✓ Within budget! ₹'+(s.budget-monthlyCost).toFixed(2)+' remaining. Estimated bill: ₹'+monthlyCost.toFixed(2)+' | Budget: ₹'+s.budget.toFixed(2);
+  bs.style.color='#15803D';
+ }
+
+ var counts={},chartNames=[];
+ names.forEach(function(n){counts[n]=(counts[n]||0)+1;chartNames.push(counts[n]===1?n:n+' ('+counts[n]+')');});
+ drawChart(chartNames,energies);
+
+ last={items:items,names:names,energies:energies,mode:$('mode').value,eff:eff,total:total,dailyCost:dailyCost,
+  monthlyEnergy:monthlyEnergy,monthlyCost:monthlyCost,yearlyEnergy:yearlyEnergy,yearlyCost:yearlyCost,
+  sD:sD,sM:sM,sY:sY,rev:rev};
+
+ api('/api/history/save',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+  body:formBody({dailyEnergy:total,dailyCost:dailyCost,monthlyEnergy:monthlyEnergy,monthlyCost:monthlyCost,tariff:eff})})
+ .then(function(){setStatus('Calculation updated and saved to MySQL successfully.');})
+ .catch(function(e){setStatus('Calculation completed, but saving to MySQL failed: '+e.message);});
+ return true;
+}
+
+/* ---------- chart ---------- */
+var chartData=null;
+function niceStep(max){
+ var raw=max/6,pow=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/pow;
+ var m=f<=1?1:f<=2?2:f<=5?5:10;
+ return m*pow;
+}
+function drawChart(names,values){
+ chartData={names:names,values:values};
+ var box=$('chart');
+ var W=Math.max(box.clientWidth,300),H=340;
+ var L=70,R=24,T=52,B=76;
+ var pw=W-L-R,ph=H-T-B;
+ var max=Math.max.apply(null,values.concat([0.001]));
+ var step=niceStep(max);
+ var top=Math.ceil(max/step)*step;
+ if(top<=max+step*0.0001)top+=step;
+ var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" font-family="Segoe UI,Arial,sans-serif">';
+ svg+='<text x="'+(W/2)+'" y="26" text-anchor="middle" font-size="18" fill="#222">Daily Energy by Appliance</text>';
+ var decimals=step<1?Math.min(3,Math.max(1,Math.ceil(-Math.log10(step)))):0;
+ for(var v=0;v<=top+step*0.001;v+=step){
+  var y=T+ph-(v/top)*ph;
+  svg+='<line x1="'+L+'" x2="'+(L+pw)+'" y1="'+y+'" y2="'+y+'" stroke="#d6d6d6" stroke-dasharray="4 3"/>';
+  svg+='<text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="#444">'+v.toFixed(decimals)+'</text>';
+ }
+ svg+='<line x1="'+L+'" x2="'+L+'" y1="'+T+'" y2="'+(T+ph)+'" stroke="#999"/>';
+ svg+='<line x1="'+L+'" x2="'+(L+pw)+'" y1="'+(T+ph)+'" y2="'+(T+ph)+'" stroke="#999"/>';
+ var n=values.length,slot=pw/n,gap=25;
+ var bw=Math.max(8,slot-gap*2/2);
+ bw=Math.max(8,slot-gap);
+ values.forEach(function(val,i){
+  var h=(val/top)*ph,x=L+i*slot+(slot-bw)/2,y=T+ph-h;
+  svg+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+h+'" fill="#F2622C"><title>'+esc(names[i])+': '+val.toFixed(3)+' kWh/day</title></rect>';
+  var label=names[i].length>16?names[i].slice(0,15)+'…':names[i];
+  svg+='<text x="'+(x+bw/2)+'" y="'+(T+ph+16)+'" text-anchor="middle" font-size="11" fill="#444">'+esc(label)+'</text>';
+ });
+ svg+='<text x="'+(L+pw/2)+'" y="'+(H-14)+'" text-anchor="middle" font-size="13" fill="#222">Appliance</text>';
+ svg+='<text transform="translate(18 '+(T+ph/2)+') rotate(-90)" text-anchor="middle" font-size="13" fill="#222">Energy (kWh/day)</text>';
+ svg+='</svg>';
+ box.innerHTML=svg;
+}
+window.addEventListener('resize',function(){if(chartData)drawChart(chartData.names,chartData.values);});
+
+/* ---------- save / load ---------- */
+async function saveDetails(){
+ var s=readSettings();if(!s)return;
+ var items=readRows();if(!items)return;
+ var local={tariff:s.tariff,budget:$('budget').value.trim(),billingMode:$('mode').value,items:items};
+ try{localStorage.setItem('wattwise-details',JSON.stringify(local));}
+ catch(e){showError('Could not save the local backup: '+e.message);return;}
  try{
-  const items=getAppliances();
-  const tariff=Number(document.getElementById('tariff').value);
-  const budgetValue=document.getElementById('budget').value;
-  const budget=budgetValue===''?null:Number(budgetValue);
-  const mode=document.getElementById('billingMode').value;
-  if(!Number.isFinite(tariff)||tariff<0)throw new Error('Enter a valid tariff.');
-  if(budget!==null&&(!Number.isFinite(budget)||budget<0))throw new Error('Enter a valid budget.');
-
-  const dailyEnergy=items.reduce((sum,a)=>sum+(a.power*a.hours/1000),0);
-  const monthlyEnergy=dailyEnergy*30;
-  const yearlyEnergy=dailyEnergy*365;
-  const bill=(units)=>{
-   if(mode==='fixed')return units*tariff;
-   let remaining=units,total=0;
-   const slabs=[{limit:100,rate:3},{limit:100,rate:5},{limit:100,rate:7},{limit:Infinity,rate:8}];
-   for(const slab of slabs){
-    const used=Math.min(remaining,slab.limit);
-    total+=used*slab.rate;
-    remaining-=used;
-    if(remaining<=0)break;
-   }
-   return total;
-  };
-  const dailyCost=bill(monthlyEnergy)/30;
-  const monthlyCost=bill(monthlyEnergy);
-  const yearlyCost=bill(yearlyEnergy);
-  const fmt=n=>'₹'+n.toFixed(2);
-  document.getElementById('dailyEnergy').textContent=dailyEnergy.toFixed(3)+' kWh';
-  document.getElementById('monthlyEnergy').textContent=monthlyEnergy.toFixed(3)+' kWh';
-  document.getElementById('yearlyEnergy').textContent=yearlyEnergy.toFixed(3)+' kWh';
-  document.getElementById('dailyCost').textContent=fmt(dailyCost);
-  document.getElementById('monthlyCost').textContent=fmt(monthlyCost);
-  document.getElementById('yearlyCost').textContent=fmt(yearlyCost);
-
-  const status=document.getElementById('budgetStatus');
-  if(budget===null)status.textContent='Enter a monthly budget to check your budget status.';
-  else if(monthlyCost<=budget)status.textContent='Within budget. Estimated remaining amount: '+fmt(budget-monthlyCost);
-  else status.textContent='Over budget by '+fmt(monthlyCost-budget)+'. Consider reducing appliance usage.';
-
-  const usage=items.map(a=>({...a,energy:a.power*a.hours/1000}));
-  usage.sort((a,b)=>b.energy-a.energy);
-  const highest=usage[0];
-  document.getElementById('highest').textContent='Highest-consuming appliance: '+highest.name+' ('+highest.energy.toFixed(3)+' kWh/day)';
-  document.getElementById('recommendation').textContent='Savings recommendation: Reduce '+highest.name+' usage by 1 hour per day to save approximately '+fmt(highest.power/1000*30*(mode==='fixed'?tariff:5))+' per month (estimated).';
-
-  const max=Math.max(...usage.map(a=>a.energy),0.001);
-  document.getElementById('chart').innerHTML=usage.map(a=>
-   '<div class="bar-row"><span>'+escapeHtml(a.name)+'</span><div class="bar"><span style="width:'+Math.max(2,a.energy/max*100)+'%"></span></div><b>'+a.energy.toFixed(3)+' kWh</b></div>'
-  ).join('');
-
-  lastCalculation={items,tariff,mode,dailyEnergy,dailyCost,monthlyEnergy,monthlyCost,yearlyEnergy,yearlyCost};
-  saveHistory(lastCalculation);
- }catch(e){alert(e.message);}
+  var body={count:items.length};
+  items.forEach(function(a,i){body['name'+i]=a.name;body['power'+i]=a.power;body['hours'+i]=a.hours;});
+  await api('/api/appliances',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formBody(body)});
+  last=null;
+  showSuccess('Appliance details saved locally and to MySQL successfully.');
+ }catch(e){
+  showError('Details were saved locally, but MySQL saving failed: '+e.message);
+ }
 }
 
-function escapeHtml(value){
- return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-async function saveHistory(c){
+function loadSaved(show){
+ var raw=null;
+ try{raw=localStorage.getItem('wattwise-details');}catch(e){}
+ if(!raw){if(show)showError('No saved details found yet. Save your details first.');return;}
  try{
-  const body=new URLSearchParams({
-   dailyEnergy:c.dailyEnergy,dailyCost:c.dailyCost,
-   monthlyEnergy:c.monthlyEnergy,monthlyCost:c.monthlyCost,tariff:c.tariff
-  });
-  await api('/api/history/save',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
- }catch(e){console.error('History save failed:',e.message);}
+  var d=JSON.parse(raw);
+  if(!d.items||d.items.length<1||d.items.length>100){showError('Saved appliance data is invalid.');return;}
+  rowsBox.innerHTML='';
+  d.items.forEach(function(a){addRow(a.name,String(a.power),String(a.hours));});
+  $('tariff').value=d.tariff===undefined?'':String(d.tariff);
+  $('budget').value=d.budget||'';
+  if(d.billingMode===SLAB||d.billingMode==='Fixed Rate')$('mode').value=d.billingMode;
+  modeChanged();
+  if(show)showSuccess('Saved appliance details loaded successfully.');
+ }catch(e){showError('Could not load saved details. The save file may be invalid.');}
 }
 
+async function loadFromDb(){
+ try{
+  var list=await api('/api/appliances');
+  if(!list.length){showSuccess('No appliance records were found in MySQL. Save appliance details first.');return;}
+  rowsBox.innerHTML='';
+  list.forEach(function(a){addRow(a.name,String(a.power),String(a.hours));});
+  showSuccess(list.length+' appliance record(s) loaded from MySQL successfully. Your current billing settings have been retained.');
+ }catch(e){
+  showError('Could not load appliance details from MySQL: '+e.message);
+ }
+}
+
+/* ---------- history ---------- */
+function fmtDate(v){
+ var s=String(v).replace('T',' ').split('.')[0];
+ var p=s.split(' ');
+ if(p.length===2&&p[0].split('-').length===3){var d=p[0].split('-');return d[2]+'-'+d[1]+'-'+d[0]+' '+p[1];}
+ return s;
+}
 async function loadHistory(){
- const tbody=document.getElementById('history');
+ var tb=$('histBody');
  try{
-  const rows=await api('/api/history');
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="5">No calculation history available.</td></tr>';return;}
-  tbody.innerHTML=rows.map(r=>'<tr><td>'+escapeHtml(r.date)+'</td><td>'+Number(r.dailyEnergy).toFixed(3)+' kWh</td><td>₹'+Number(r.dailyCost).toFixed(2)+'</td><td>₹'+Number(r.monthlyCost).toFixed(2)+'</td><td>₹'+Number(r.tariff).toFixed(2)+'</td></tr>').join('');
- }catch(e){tbody.innerHTML='<tr><td colspan="5">'+escapeHtml(e.message)+'</td></tr>';}
+  var rows=await api('/api/history');
+  if(!rows.length){tb.innerHTML='<tr><td colspan="7">No calculation history available.</td></tr>';return;}
+  tb.innerHTML=rows.map(function(r){
+   return '<tr><td>'+esc(r.id)+'</td><td>'+esc(fmtDate(r.date))+'</td><td>'+r.dailyEnergy+'</td><td>'+r.dailyCost+'</td><td>'+r.monthlyEnergy+'</td><td>'+r.monthlyCost+'</td><td>'+r.tariff+'</td></tr>';
+  }).join('');
+ }catch(e){tb.innerHTML='<tr><td colspan="7">Could not load calculation history: '+esc(e.message)+'</td></tr>';}
 }
+function showHistory(){$('histOv').classList.add('show');loadHistory();}
+function closeHist(){$('histOv').classList.remove('show');}
 
-function exportCSV(){
- if(!lastCalculation){alert('Calculate your energy cost first.');return;}
- const c=lastCalculation;
- const rows=[
-  ['WattWise - Smart Energy Estimator'],
-  ['Billing mode',c.mode==='fixed'?'Fixed Rate':'Slab-Based Billing'],
-  ['Tariff',c.tariff],
-  ['Daily Energy (kWh)',c.dailyEnergy],
-  ['Daily Cost (Rs)',c.dailyCost],
-  ['Monthly Energy (kWh)',c.monthlyEnergy],
-  ['Monthly Cost (Rs)',c.monthlyCost],
-  ['Yearly Energy (kWh)',c.yearlyEnergy],
-  ['Yearly Cost (Rs)',c.yearlyCost],
-  [],
-  ['Appliance','Power (W)','Hours/day','Daily Energy (kWh)'],
-  ...c.items.map(a=>[a.name,a.power,a.hours,a.power*a.hours/1000])
+/* ---------- export ---------- */
+function csvq(v){return '"'+String(v).replace(/"/g,'""')+'"';}
+function exportCsv(){
+ if(!calculate()||!last)return;
+ var c=last,nl=String.fromCharCode(13,10);
+ var lines=[
+  'WattWise Electricity Report',
+  'Billing mode,'+csvq(c.mode),
+  'Effective average tariff (rupees per kWh),'+c.eff,
+  'Daily total energy (kWh),'+c.total,
+  'Daily estimated cost (rupees),'+c.dailyCost,
+  'Monthly energy (kWh),'+c.monthlyEnergy,
+  'Monthly estimated cost (rupees),'+c.monthlyCost,
+  'Yearly energy (kWh),'+c.yearlyEnergy,
+  'Yearly estimated cost (rupees),'+c.yearlyCost,
+  'Potential daily savings (rupees),'+c.sD,
+  'Potential monthly savings (rupees),'+c.sM,
+  'Potential yearly savings (rupees),'+c.sY,
+  'Revised monthly bill estimate (rupees),'+c.rev,
+  '',
+  'Appliance,Power (W),Hours per day,Daily energy (kWh),Daily cost (rupees),Share of total (%)'
  ];
- const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\\r\\n');
- const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
- const url=URL.createObjectURL(blob);
- const link=document.createElement('a');
- link.href=url;link.download='WattWise_Report.csv';link.click();
+ c.items.forEach(function(a,i){
+  var used=c.energies[i],share=c.total>0?used/c.total*100:0;
+  lines.push(csvq(a.name)+','+a.power+','+a.hours+','+used+','+(used*c.eff)+','+share);
+ });
+ var blob=new Blob([String.fromCharCode(0xFEFF)+lines.join(nl)],{type:'text/csv;charset=utf-8;'});
+ var url=URL.createObjectURL(blob);
+ var a=document.createElement('a');
+ a.href=url;a.download='WattWise_Report.csv';
+ document.body.appendChild(a);a.click();a.remove();
  URL.revokeObjectURL(url);
+ showSuccess('CSV report exported successfully as WattWise_Report.csv');
 }
 
-addAppliance();
+addRow();
 </script>
 </body>
 </html>
@@ -492,7 +716,9 @@ addAppliance();
 
                     Object date = result.getObject("history_date");
                     json.append("{")
-                            .append("\"date\":\"")
+                            .append("\"id\":")
+                            .append(result.getLong("id"))
+                            .append(",\"date\":\"")
                             .append(jsonEscape(String.valueOf(date)))
                             .append("\",\"dailyEnergy\":")
                             .append(result.getDouble("daily_energy_kwh"))
